@@ -23,13 +23,15 @@
                         <tr>
                             <th>ID</th>
                             <th>Имя</th>
+                            <th>Последняя проверка</th>
                         </tr>
                     </thead>
                     <tbody>
-                    {% for id, name, _ in urls %}
+                    {% for id, name, date in urls %}
                         <tr>
                             <td>{{ id }}</td>
-                            <td>{{ name }}</td>
+                            <td><a href="/urls/{{ id }}">{{ name }}</a></td>
+                            <td>{{ date.date() }}</td>
                         </tr>
                     {% endfor %}
                     </tbody>

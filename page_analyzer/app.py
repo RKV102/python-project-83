@@ -27,16 +27,23 @@ def get_url(id):
     conn_cursor.execute(
         f"SELECT id, name, created_at FROM urls WHERE id = {id}"
     )
-    id, name, date_and_time = conn_cursor.fetchone()
+    url = conn_cursor.fetchone()
+    conn_cursor.execute(
+        f"SELECT COUNT(*) FROM url_checks WHERE url_id = {id}"
+    )
+    check_count = conn_cursor.fetchone()[0]
+    conn_cursor.execute(
+        f"SELECT id, created_at FROM url_checks WHERE url_id = {id}"
+    )
+    checks = conn_cursor.fetchmany(check_count)
     conn_cursor.close()
     conn.close()
-    message = get_flashed_messages(with_categories=True)[0]
+    message = get_flashed_messages(with_categories=True)
     return render_template(
         'url.html',
-        id=id,
-        name=name,
-        date=date_and_time.date(),
-        message=message
+        url=url,
+        message=message,
+        checks=checks
     )
 
 
@@ -87,3 +94,18 @@ def post_urls():
     conn_cursor.close()
     conn.close()
     return redirect(f'/urls/{id[0]}', code=302)
+
+
+@app.post('/urls/<id>/checks')
+def post_checks(id):
+    timestamp = datetime.now()
+    conn = psycopg2.connect(DATABASE_URL)
+    conn.autocommit = True
+    conn_cursor = conn.cursor()
+    conn_cursor.execute(
+        "INSERT INTO url_checks (url_id, created_at) "
+        + f"VALUES ('{id}', '{timestamp}')"
+    )
+    conn_cursor.close()
+    conn.close()
+    return redirect(f'/urls/{id}', code=302)
