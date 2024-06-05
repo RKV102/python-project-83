@@ -17,8 +17,10 @@
     {% if message %}
         {% if message[0][0] == 'success' %}
             <div class="alert alert-success" role="alert">{{ message[0][1] }}</div>
-        {% else %}
+        {% elif message[0][0] == 'warning' %}
             <div class="alert alert-info" role="alert">{{ message[0][1] }}</div>
+        {% else %}
+            <div class="alert alert-danger" role="alert">{{ message[0][1] }}</div>
         {% endif %}
     {% endif %}
     <main class="flex-grow-1">
@@ -43,7 +45,7 @@
                 </table>
             </div>
             <h2 class="mt-5 mb-3">Проверки</h2>
-            <form method="post" action="/urls/{{ id }}/checks">
+            <form method="post" action="/urls/{{ url[0] }}/checks">
                 <input type="submit" value="Запустить проверку" class="btn btn-primary">
             </form>
             <div>
@@ -62,10 +64,10 @@
                     {% for check in checks %}
                         <tr>
                             <td>{{ check[0] }}</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td>{{ check[2] }}</td>
+                            <td>{{ check[3] if check[3] else ''}}</td>
+                            <td>{{ check[4] if check[4] else ''}}</td>
+                            <td>{{ check[5] if check[5] else ''}}</td>
                             <td>{{ check[1].date() }}</td>
                         </tr>
                     {% endfor %}

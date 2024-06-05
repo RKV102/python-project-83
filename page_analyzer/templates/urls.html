@@ -27,11 +27,15 @@
                         </tr>
                     </thead>
                     <tbody>
-                    {% for id, name, date in urls %}
+                    {% for id, name, create_date, check_date in urls %}
                         <tr>
                             <td>{{ id }}</td>
                             <td><a href="/urls/{{ id }}">{{ name }}</a></td>
-                            <td>{{ date.date() }}</td>
+                            {% if check_date %}
+                                <td>{{ check_date.date() }}</td>
+                            {% else %}
+                                <td></td>
+                            {% endif %}
                         </tr>
                     {% endfor %}
                     </tbody>
