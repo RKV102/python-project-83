@@ -136,8 +136,9 @@ def post_checks(id):
         h1_string = h1.string if h1 else None
         title = soup.title
         title_string = title.string if title else None
-        description = (soup.find('p'))
-        description_string = description.getText() if description else None
+        description = soup.find('meta', attrs={'name': 'description'})
+        description_string = description.get('content') if description \
+            else None
         conn_cursor.execute(
             "INSERT INTO url_checks (url_id, created_at, status_code, h1, "
             "title, description) VALUES (%s, %s, %s, %s, %s, %s)",
