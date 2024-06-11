@@ -12,3 +12,5 @@ CREATE TABLE IF NOT EXISTS url_checks (
   description TEXT,
   created_at TIMESTAMP
 );
+DELETE FROM urls *;
+DELETE FROM url_checks *;
