@@ -59,9 +59,9 @@ def get_urls():
     conn_cursor.execute("SELECT COUNT(*) FROM urls")
     urls_count = conn_cursor.fetchone()[0]
     conn_cursor.execute(
-        "SELECT urls.id, urls.name, urls.created_at AS url_created_at, "
-        + "url_checks.created_at AS check_created_at FROM urls LEFT JOIN "
-        + "url_checks ON urls.id = url_checks.url_id"
+        "SELECT urls.id, urls.name, url_checks.created_at AS check_created_at, "
+        "url_checks.status_code FROM urls LEFT JOIN "
+        "url_checks ON urls.id = url_checks.url_id"
     )
     urls = conn_cursor.fetchmany(urls_count)
     conn_cursor.close()

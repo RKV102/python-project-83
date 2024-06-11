@@ -24,15 +24,21 @@
                             <th>ID</th>
                             <th>Имя</th>
                             <th>Последняя проверка</th>
+                            <th>Код ответа</th>
                         </tr>
                     </thead>
                     <tbody>
-                    {% for id, name, create_date, check_date in urls %}
+                    {% for id, name, check_date, status_code in urls %}
                         <tr>
                             <td>{{ id }}</td>
                             <td><a href="/urls/{{ id }}">{{ name }}</a></td>
                             {% if check_date %}
                                 <td>{{ check_date.date() }}</td>
+                            {% else %}
+                                <td></td>
+                            {% endif %}
+                            {% if status_code %}
+                                <td>{{ status_code }}</td>
                             {% else %}
                                 <td></td>
                             {% endif %}
