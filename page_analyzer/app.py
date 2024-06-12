@@ -13,7 +13,6 @@ app.register_blueprint(get_url, url_prefix='/urls')
 app.register_blueprint(get_urls, url_prefix='/urls')
 app.register_blueprint(post_urls, url_prefix='/urls')
 app.register_blueprint(post_checks, url_prefix='/urls')
-DATABASE_URL = os.getenv('DATABASE_URL')
 
 
 @app.get('/')
