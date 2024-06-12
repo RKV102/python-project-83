@@ -9,7 +9,7 @@ load_dotenv()
 DATABASE_URL = os.getenv('DATABASE_URL')
 
 
-@get_url.get('/<id>')
+@get_url.get('/urls/<id>')
 def get_url_(id):
     conn = psycopg2.connect(DATABASE_URL)
     conn.autocommit = True

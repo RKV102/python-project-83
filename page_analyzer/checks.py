@@ -13,7 +13,7 @@ load_dotenv()
 DATABASE_URL = os.getenv('DATABASE_URL')
 
 
-@post_checks.post('/<id>/checks')
+@post_checks.post('/urls/<id>/checks')
 def post_checks_(id):
     timestamp = datetime.now()
     conn = psycopg2.connect(DATABASE_URL)

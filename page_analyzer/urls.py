@@ -13,7 +13,7 @@ load_dotenv()
 DATABASE_URL = os.getenv('DATABASE_URL')
 
 
-@get_urls.get('/')
+@get_urls.get('/urls')
 def get_urls_():
     conn = psycopg2.connect(DATABASE_URL)
     conn.autocommit = True
@@ -34,7 +34,7 @@ def get_urls_():
     )
 
 
-@post_urls.post('/')
+@post_urls.post('/urls')
 def post_urls_():
     url = request.form.get('url', '')
     error = None

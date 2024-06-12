@@ -9,10 +9,10 @@ from page_analyzer.checks import post_checks
 load_dotenv()
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
-app.register_blueprint(get_url, url_prefix='/urls')
-app.register_blueprint(get_urls, url_prefix='/urls')
-app.register_blueprint(post_urls, url_prefix='/urls')
-app.register_blueprint(post_checks, url_prefix='/urls')
+app.register_blueprint(get_url)
+app.register_blueprint(get_urls)
+app.register_blueprint(post_urls)
+app.register_blueprint(post_checks)
 
 
 @app.get('/')
