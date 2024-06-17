@@ -15,19 +15,17 @@ DATABASE_URL = os.getenv('DATABASE_URL')
 
 @get_urls.get('/urls')
 def get_urls_():
-    conn = psycopg2.connect(DATABASE_URL)
-    conn.autocommit = True
-    conn_cursor = conn.cursor()
-    conn_cursor.execute("SELECT COUNT(*) FROM urls")
-    urls_count = conn_cursor.fetchone()[0]
-    conn_cursor.execute(
-        "SELECT urls.id, urls.name, url_checks.created_at AS check_created_at, "
-        "url_checks.status_code FROM urls LEFT JOIN "
-        "url_checks ON urls.id = url_checks.url_id"
-    )
-    urls = conn_cursor.fetchmany(urls_count)
-    conn_cursor.close()
-    conn.close()
+    with psycopg2.connect(DATABASE_URL) as connection:
+        connection.autocommit = True
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT COUNT(*) FROM urls")
+            urls_count = cursor.fetchone()[0]
+            cursor.execute(
+                "SELECT urls.id, urls.name, url_checks.created_at AS "
+                "check_created_at, url_checks.status_code FROM urls LEFT JOIN "
+                "url_checks ON urls.id = url_checks.url_id"
+            )
+            urls = cursor.fetchmany(urls_count)
     return render_template(
         'urls.html',
         urls=urls
@@ -50,26 +48,24 @@ def post_urls_():
         ), 422
     parsed_search = urlparse(url)
     normalized_search = parsed_search[0] + r'://' + parsed_search[1]
-    conn = psycopg2.connect(DATABASE_URL)
-    conn.autocommit = True
-    conn_cursor = conn.cursor()
-    conn_cursor.execute(
-        f"SELECT id FROM urls WHERE name = '{normalized_search}';"
-    )
-    id = conn_cursor.fetchone()
-    if not id:
-        timestamp = datetime.now()
-        conn_cursor.execute(
-            "INSERT INTO urls (name, created_at) "
-            "VALUES (%s, %s)",
-            (normalized_search, timestamp)
-        )
-        conn_cursor.execute("SELECT MAX(id) FROM urls")
-        id = conn_cursor.fetchone()[0]
-        flash('Страница успешно добавлена', 'success')
-    else:
-        id = id[0]
-        flash('Страница уже существует', 'warning')
-    conn_cursor.close()
-    conn.close()
+    with psycopg2.connect(DATABASE_URL) as connection:
+        connection.autocommit = True
+        with connection.cursor() as cursor:
+            cursor.execute(
+                f"SELECT id FROM urls WHERE name = '{normalized_search}';"
+            )
+            id = cursor.fetchone()
+            if not id:
+                timestamp = datetime.now()
+                cursor.execute(
+                    "INSERT INTO urls (name, created_at) "
+                    "VALUES (%s, %s)",
+                    (normalized_search, timestamp)
+                )
+                cursor.execute("SELECT MAX(id) FROM urls")
+                id = cursor.fetchone()[0]
+                flash('Страница успешно добавлена', 'success')
+            else:
+                id = id[0]
+                flash('Страница уже существует', 'warning')
     return redirect(f'/urls/{id}', code=302)
