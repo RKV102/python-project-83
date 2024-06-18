@@ -1,6 +1,6 @@
 # Анализатор страниц
 
-[Приложение](https://python-project-83-vpd7.onrender.com/) анализирует веб-страницы на их SEO-пригодность.
+[Приложение](https://python-project-83-vpd7.onrender.com/) анализирует веб-страницы на их SEO-пригодность по аналогии с [PageSpeed Insights](https://pagespeed.web.dev/).
 
 ## Статус непрерывной интеграции
 
