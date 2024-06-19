@@ -9,6 +9,7 @@ post_urls = Blueprint('post_urls', __name__, template_folder='templates')
 @get_urls.get('/urls')
 def get_urls_():
     urls = get_urls__()
+    print(urls)
     return render_template(
         'urls.html',
         urls=urls

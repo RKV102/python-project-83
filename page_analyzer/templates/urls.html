@@ -28,17 +28,17 @@
                         </tr>
                     </thead>
                     <tbody>
-                    {% for id, name, check_date, status_code in urls %}
+                    {% for url in urls %}
                         <tr>
-                            <td>{{ id }}</td>
-                            <td><a href="/urls/{{ id }}">{{ name }}</a></td>
-                            {% if check_date %}
-                                <td>{{ check_date.date() }}</td>
+                            <td>{{ url[0] }}</td>
+                            <td><a href="/urls/{{ url[0] }}">{{ url[1] }}</a></td>
+                            {% if url[2] %}
+                                <td>{{ url[2].date() }}</td>
                             {% else %}
                                 <td></td>
                             {% endif %}
-                            {% if status_code %}
-                                <td>{{ status_code }}</td>
+                            {% if url[3] %}
+                                <td>{{ url[3] }}</td>
                             {% else %}
                                 <td></td>
                             {% endif %}
