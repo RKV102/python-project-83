@@ -2,7 +2,6 @@ from flask import Blueprint, render_template, flash, redirect, request
 from page_analyzer.db import (get_all_urls, map_urls, select_url_id,
                               get_last_url_id, add_url)
 from urllib.parse import urlparse
-from datetime import datetime
 import validators
 
 

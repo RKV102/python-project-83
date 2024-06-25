@@ -1,5 +1,4 @@
 from flask import Blueprint, flash, redirect
-from datetime import datetime
 from page_analyzer.db import get_url_by_id, get_url_name, add_check
 from bs4 import BeautifulSoup
 import requests
