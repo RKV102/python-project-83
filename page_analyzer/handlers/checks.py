@@ -11,10 +11,10 @@ post_checks = Blueprint('post_checks', __name__, template_folder='templates')
 def post_checks_(id):
     url = get_url_by_id(id, 'name')
     url_name = get_url_name(url)
-    response = requests.get(url_name)
     try:
+        response = requests.get(url_name, timeout=(3, 5))
         response.raise_for_status()
-    except requests.HTTPError:
+    except (requests.HTTPError, requests.exceptions.Timeout):
         flash('Произошла ошибка при проверке', 'error')
     else:
         flash('Страница успешно проверена', 'success')
