@@ -25,7 +25,7 @@ def post_checks_(id):
 
 
 def parse_response_content(response_content, parser='html.parser'):
-    soup = BeautifulSoup(response_content, 'html.parser')
+    soup = BeautifulSoup(response_content, parser)
     h1 = soup.h1
     h1_string = h1.string if h1 else None
     title = soup.title
