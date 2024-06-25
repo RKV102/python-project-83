@@ -20,14 +20,18 @@ def post_checks_(id):
     else:
         flash('Страница успешно проверена', 'success')
         status_code = response.status_code
-        soup = BeautifulSoup(response.content, 'html.parser')
-        h1 = soup.h1
-        h1_string = h1.string if h1 else None
-        title = soup.title
-        title_string = title.string if title else None
-        description = soup.find('meta', attrs={'name': 'description'})
-        description_string = description.get('content') if description \
-            else None
-        add_check(id, status_code, h1_string, title_string,
-                  description_string)
+        h1, title, description = parse_response_content(response.content)
+        add_check(id, status_code, h1, title, description)
     return redirect(f'/urls/{id}', code=302)
+
+
+def parse_response_content(response_content, parser='html.parser'):
+    soup = BeautifulSoup(response_content, 'html.parser')
+    h1 = soup.h1
+    h1_string = h1.string if h1 else None
+    title = soup.title
+    title_string = title.string if title else None
+    description = soup.find('meta', attrs={'name': 'description'})
+    description_string = description.get('content') if description \
+        else None
+    return h1_string, title_string, description_string
