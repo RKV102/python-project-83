@@ -67,26 +67,25 @@ def get_last_url_id():
             return cursor.fetchone()[0]
 
 
-def add_url(url, created_at):
-    query = 'INSERT INTO urls (name, created_at) VALUES (%s, %s)'
+def add_url(url):
+    query = 'INSERT INTO urls (name) VALUES (%s)'
     with psycopg2.connect(DATABASE_URL) as connection:
         connection.autocommit = True
         with connection.cursor() as cursor:
-            cursor.execute(query, (url, created_at))
+            cursor.execute(query, [url])
 
 
 def get_url_name(url):
     return url[0]
 
 
-def add_check(id, created_at, status_code, h1, title, description):
-    query = 'INSERT INTO url_checks (url_id, created_at, status_code, h1, '\
-            'title, description) VALUES (%s, %s, %s, %s, %s, %s)'
+def add_check(id, status_code, h1, title, description):
+    query = 'INSERT INTO url_checks (url_id, status_code, h1, '\
+            'title, description) VALUES (%s, %s, %s, %s, %s)'
     with psycopg2.connect(DATABASE_URL) as connection:
         connection.autocommit = True
         with connection.cursor() as cursor:
-            cursor.execute(query, (id, created_at, status_code, h1, title,
-                                   description))
+            cursor.execute(query, (id, status_code, h1, title, description))
 
 
 def map_urls(urls):

@@ -10,7 +10,6 @@ post_checks = Blueprint('post_checks', __name__, template_folder='templates')
 
 @post_checks.post('/urls/<id>/checks')
 def post_checks_(id):
-    timestamp = datetime.now()
     url = get_url_by_id(id, 'name')
     url_name = get_url_name(url)
     response = requests.get(url_name)
@@ -29,6 +28,6 @@ def post_checks_(id):
         description = soup.find('meta', attrs={'name': 'description'})
         description_string = description.get('content') if description \
             else None
-        add_check(id, timestamp, status_code, h1_string, title_string,
+        add_check(id, status_code, h1_string, title_string,
                   description_string)
     return redirect(f'/urls/{id}', code=302)

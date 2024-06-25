@@ -38,8 +38,7 @@ def post_urls_():
     normalized_url = parsed_url[0] + r'://' + parsed_url[1]
     id = select_url_id(normalized_url)
     if not id:
-        timestamp = datetime.now()
-        add_url(normalized_url, timestamp)
+        add_url(normalized_url)
         id = get_last_url_id()
         flash('Страница успешно добавлена', 'success')
     else:
