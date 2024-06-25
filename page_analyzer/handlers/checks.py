@@ -1,6 +1,6 @@
 from flask import Blueprint, flash, redirect
 from datetime import datetime
-from page_analyzer.db import select_data, insert_data
+from page_analyzer.db import get_url_by_id, get_url_name, add_check
 from bs4 import BeautifulSoup
 import requests
 
@@ -11,13 +11,9 @@ post_checks = Blueprint('post_checks', __name__, template_folder='templates')
 @post_checks.post('/urls/<id>/checks')
 def post_checks_(id):
     timestamp = datetime.now()
-    url = select_data(
-        ['name'],
-        'urls',
-        1,
-        f'id = {id}'
-    )[0]
-    response = requests.get(url)
+    url = get_url_by_id(id, 'name')
+    url_name = get_url_name(url)
+    response = requests.get(url_name)
     try:
         response.raise_for_status()
     except requests.HTTPError:
@@ -33,15 +29,6 @@ def post_checks_(id):
         description = soup.find('meta', attrs={'name': 'description'})
         description_string = description.get('content') if description \
             else None
-        insert_data(
-            'url_checks',
-            [
-                'url_id', 'created_at', 'status_code', 'h1', 'title',
-                'description'
-            ],
-            [
-                id, timestamp, status_code, h1_string, title_string,
-                description_string
-            ]
-        )
+        add_check(id, timestamp, status_code, h1_string, title_string,
+                  description_string)
     return redirect(f'/urls/{id}', code=302)
