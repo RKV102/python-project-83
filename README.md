@@ -1,6 +1,6 @@
 # Анализатор страниц
 
-Приложение анализирует веб-страницы на их SEO-пригодность по аналогии с [PageSpeed Insights](https://pagespeed.web.dev/).
+[Приложение](https://python-project-83-production-1fe4.up.railway.app) анализирует веб-страницы на их SEO-пригодность по аналогии с [PageSpeed Insights](https://pagespeed.web.dev/).
 
 ## Как работать с анализатором
 
