@@ -30,7 +30,6 @@ def post_urls_():
     if error:
         return render_template(
             'index.html',
-            url=url,
             error=error
         ), 422
     parsed_url = urlparse(url)
