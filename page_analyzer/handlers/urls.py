@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, flash, redirect, request
-from page_analyzer.db import (get_all_urls, map_urls, select_url_id,
+from page_analyzer.db import (get_all_urls, map_urls, get_url_id,
                               get_last_url_id, add_url)
 from urllib.parse import urlparse
 import validators
@@ -34,7 +34,7 @@ def post_urls_():
         ), 422
     parsed_url = urlparse(url)
     normalized_url = parsed_url.scheme + r'://' + parsed_url.hostname
-    id = select_url_id(normalized_url)
+    id = get_url_id(normalized_url)
     if not id:
         add_url(normalized_url)
         id = get_last_url_id()

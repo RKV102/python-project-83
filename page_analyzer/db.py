@@ -51,7 +51,7 @@ def get_checks_by_id(id):
             return cursor.fetchall()
 
 
-def select_url_id(url):
+def get_url_id(url):
     query = f"SELECT id FROM urls WHERE name = '{url}'"
     with psycopg2.connect(DATABASE_URL) as connection:
         connection.autocommit = True
