@@ -1,5 +1,5 @@
 from flask import Blueprint, flash, redirect
-from page_analyzer.db import get_url_by_id, get_url_name, add_check
+from page_analyzer.db import get_url_by_id, add_check
 from bs4 import BeautifulSoup
 import requests
 
@@ -10,7 +10,7 @@ post_checks = Blueprint('post_checks', __name__, template_folder='templates')
 @post_checks.post('/urls/<id>/checks')
 def post_checks_(id):
     url = get_url_by_id(id, 'name')
-    url_name = get_url_name(url)
+    url_name = url['name']
     try:
         response = requests.get(url_name, timeout=(3, 5))
         response.raise_for_status()

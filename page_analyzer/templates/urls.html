@@ -30,15 +30,15 @@
                     <tbody>
                     {% for url in urls %}
                         <tr>
-                            <td>{{ url[0] }}</td>
-                            <td><a href="/urls/{{ url[0] }}">{{ url[1] }}</a></td>
-                            {% if url[2] %}
-                                <td>{{ url[2].date() }}</td>
+                            <td>{{ url['id'] }}</td>
+                            <td><a href="/urls/{{ url['id'] }}">{{ url['name'] }}</a></td>
+                            {% if url['last_check_created_at'] %}
+                                <td>{{ url['last_check_created_at'].date() }}</td>
                             {% else %}
                                 <td></td>
                             {% endif %}
-                            {% if url[3] %}
-                                <td>{{ url[3] }}</td>
+                            {% if url['last_check_status_code'] %}
+                                <td>{{ url['last_check_status_code'] }}</td>
                             {% else %}
                                 <td></td>
                             {% endif %}

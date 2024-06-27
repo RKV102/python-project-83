@@ -31,21 +31,21 @@
                     <tbody>
                         <tr>
                             <td>ID</td>
-                            <td>{{ url[0] }}</td>
+                            <td>{{ url['id'] }}</td>
                         </tr>
                         <tr>
                             <td>Имя</td>
-                            <td>{{ url[1] }}</td>
+                            <td>{{ url['name'] }}</td>
                         </tr>
                         <tr>
                             <td>Дата создания</td>
-                            <td>{{ url[2].date() }}</td>
+                            <td>{{ url['created_at'].date() }}</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
             <h2 class="mt-5 mb-3">Проверки</h2>
-            <form method="post" action="/urls/{{ url[0] }}/checks">
+            <form method="post" action="/urls/{{ url['id'] }}/checks">
                 <input type="submit" value="Запустить проверку" class="btn btn-primary">
             </form>
             <div>
@@ -63,12 +63,12 @@
                     <tbody>
                     {% for check in checks %}
                         <tr>
-                            <td>{{ check[0] }}</td>
-                            <td>{{ check[2] }}</td>
-                            <td>{{ check[3] if check[3] else ''}}</td>
-                            <td>{{ check[4] if check[4] else ''}}</td>
-                            <td>{{ check[5] if check[5] else ''}}</td>
-                            <td>{{ check[1].date() }}</td>
+                            <td>{{ check['id'] }}</td>
+                            <td>{{ check['status_code'] }}</td>
+                            <td>{{ check['h1'] if check['h1'] else ''}}</td>
+                            <td>{{ check['title'] if check['title'] else ''}}</td>
+                            <td>{{ check['description'] if check['description'] else ''}}</td>
+                            <td>{{ check['created_at'].date() }}</td>
                         </tr>
                     {% endfor %}
                     </tbody>

@@ -1,4 +1,5 @@
 import psycopg2
+import psycopg2.extras
 import os
 from dotenv import load_dotenv
 
@@ -12,7 +13,8 @@ def get_url_by_id(id, *columns):
     query = f'SELECT {joined_columns} FROM urls WHERE id = {id}'
     with psycopg2.connect(DATABASE_URL) as connection:
         connection.autocommit = True
-        with connection.cursor() as cursor:
+        with connection.cursor(cursor_factory=psycopg2.extras.DictCursor)\
+                as cursor:
             cursor.execute(query)
             return cursor.fetchone()
 
@@ -21,7 +23,8 @@ def get_all_urls():
     query = 'SELECT id, name FROM urls ORDER BY id'
     with psycopg2.connect(DATABASE_URL) as connection:
         connection.autocommit = True
-        with connection.cursor() as cursor:
+        with connection.cursor(cursor_factory=psycopg2.extras.DictCursor)\
+                as cursor:
             cursor.execute(query)
             return cursor.fetchall()
 
@@ -31,7 +34,8 @@ def get_last_check_by_id(id):
             f'WHERE url_id = {id} ORDER BY created_at DESC LIMIT 1'
     with psycopg2.connect(DATABASE_URL) as connection:
         connection.autocommit = True
-        with connection.cursor() as cursor:
+        with connection.cursor(cursor_factory=psycopg2.extras.DictCursor)\
+                as cursor:
             cursor.execute(query)
             return cursor.fetchone()
 
@@ -41,7 +45,8 @@ def get_checks_by_id(id):
             f'FROM url_checks WHERE url_id = {id}'
     with psycopg2.connect(DATABASE_URL) as connection:
         connection.autocommit = True
-        with connection.cursor() as cursor:
+        with connection.cursor(cursor_factory=psycopg2.extras.DictCursor)\
+                as cursor:
             cursor.execute(query)
             return cursor.fetchall()
 
@@ -50,11 +55,12 @@ def select_url_id(url):
     query = f"SELECT id FROM urls WHERE name = '{url}'"
     with psycopg2.connect(DATABASE_URL) as connection:
         connection.autocommit = True
-        with connection.cursor() as cursor:
+        with connection.cursor(cursor_factory=psycopg2.extras.DictCursor)\
+                as cursor:
             cursor.execute(query)
             url_id = cursor.fetchone()
             if url_id:
-                return url_id[0]
+                return url_id['id']
             return url_id
 
 
@@ -62,9 +68,10 @@ def get_last_url_id():
     query = 'SELECT MAX(id) FROM urls'
     with psycopg2.connect(DATABASE_URL) as connection:
         connection.autocommit = True
-        with connection.cursor() as cursor:
+        with connection.cursor(cursor_factory=psycopg2.extras.DictCursor)\
+                as cursor:
             cursor.execute(query)
-            return cursor.fetchone()[0]
+            return cursor.fetchone()['max']
 
 
 def add_url(url):
@@ -73,10 +80,6 @@ def add_url(url):
         connection.autocommit = True
         with connection.cursor() as cursor:
             cursor.execute(query, [url])
-
-
-def get_url_name(url):
-    return url[0]
 
 
 def add_check(id, status_code, h1, title, description):
@@ -91,9 +94,16 @@ def add_check(id, status_code, h1, title, description):
 def map_urls(urls):
     mapped_urls = []
     for url in urls:
-        check = get_last_check_by_id(url[0])
+        mapped_url = {
+            'id': url['id'],
+            'name': url['name']
+        }
+        check = get_last_check_by_id(url['id'])
         if check:
-            mapped_urls.append([*url, *check])
+            mapped_url['last_check_created_at'] = check['created_at']
+            mapped_url['last_check_status_code'] = check['status_code']
         else:
-            mapped_urls.append([*url, None, None])
+            mapped_url['last_check_created_at'] = None
+            mapped_url['last_check_status_code'] = None
+        mapped_urls.append(mapped_url)
     return mapped_urls
