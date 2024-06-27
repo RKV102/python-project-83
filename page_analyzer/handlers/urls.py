@@ -34,7 +34,7 @@ def post_urls_():
             error=error
         ), 422
     parsed_url = urlparse(url)
-    normalized_url = parsed_url[0] + r'://' + parsed_url[1]
+    normalized_url = parsed_url.scheme + r'://' + parsed_url.hostname
     id = select_url_id(normalized_url)
     if not id:
         add_url(normalized_url)
