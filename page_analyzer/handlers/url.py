@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, get_flashed_messages
+from flask import Blueprint, render_template
 from page_analyzer.db import get_url_by_id, get_checks_by_id
 
 
