@@ -1,4 +1,4 @@
-from flask import Blueprint, flash, redirect
+from flask import Blueprint, flash, redirect, url_for
 from page_analyzer.db import get_url_by_id, add_check
 from bs4 import BeautifulSoup
 import requests
@@ -21,7 +21,7 @@ def post_checks_(id):
         status_code = response.status_code
         h1, title, description = parse_response_content(response.content)
         add_check(id, status_code, h1, title, description)
-    return redirect(f'/urls/{id}', code=302)
+    return redirect(url_for('get_url.get_url_', id=id), code=302)
 
 
 def parse_response_content(response_content, parser='html.parser'):

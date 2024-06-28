@@ -18,7 +18,7 @@
                     {% for url in urls %}
                         <tr>
                             <td>{{ url['id'] }}</td>
-                            <td><a href="/urls/{{ url['id'] }}">{{ url['name'] }}</a></td>
+                            <td><a href="{{ url_for('get_url.get_url_', id=url['id']) }}">{{ url['name'] }}</a></td>
                             {% if url['last_check_created_at'] %}
                                 <td>{{ url['last_check_created_at'].date() }}</td>
                             {% else %}

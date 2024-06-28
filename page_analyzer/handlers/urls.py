@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, flash, redirect, request
+from flask import Blueprint, render_template, flash, redirect, request, url_for
 from page_analyzer.db import (get_all_urls, map_urls, get_url_id,
                               get_last_url_id, add_url)
 from urllib.parse import urlparse
@@ -41,4 +41,4 @@ def post_urls_():
         flash('Страница успешно добавлена', 'success')
     else:
         flash('Страница уже существует', 'warning')
-    return redirect(f'/urls/{id}', code=302)
+    return redirect(url_for('get_url.get_url_', id=id), code=302)
