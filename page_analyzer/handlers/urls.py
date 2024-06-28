@@ -32,8 +32,7 @@ def post_urls_():
             'index.html',
             error=error
         ), 422
-    parsed_url = urlparse(url)
-    normalized_url = parsed_url.scheme + r'://' + parsed_url.hostname
+    normalized_url = normalize_url(url)
     id = get_url_id(normalized_url)
     if not id:
         add_url(normalized_url)
@@ -42,3 +41,9 @@ def post_urls_():
     else:
         flash('Страница уже существует', 'warning')
     return redirect(url_for('get_url.get_url_', id=id), code=302)
+
+
+def normalize_url(url):
+    parsed_url = urlparse(url)
+    normalized_url = parsed_url.scheme + r'://' + parsed_url.hostname
+    return normalized_url
