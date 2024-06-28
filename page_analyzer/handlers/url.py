@@ -9,10 +9,8 @@ get_url = Blueprint('get_url', __name__, template_folder='templates')
 def get_url_(id):
     url = get_url_by_id(id, 'id', 'name', 'created_at')
     checks = get_checks_by_id(id)
-    message = get_flashed_messages(with_categories=True)
     return render_template(
         'url.html',
         url=url,
-        message=message,
         checks=checks
     )
