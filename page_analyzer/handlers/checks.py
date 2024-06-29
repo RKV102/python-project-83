@@ -9,7 +9,7 @@ post_checks = Blueprint('post_checks', __name__, template_folder='templates')
 
 @post_checks.post('/urls/<id>/checks')
 def post_checks_(id):
-    url = get_url_by_id(id, 'name')
+    url = get_url_by_id(id)
     url_name = url['name']
     try:
         response = requests.get(url_name, timeout=(3, 5))

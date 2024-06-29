@@ -8,8 +8,12 @@ load_dotenv()
 DATABASE_URL = os.getenv('DATABASE_URL')
 
 
-def get_url_by_id(id, *columns):
-    joined_columns = ', '.join(columns)
+def get_url_by_id(id, column_id=False, column_created_at=False):
+    selected_columns = ['name', *[key for key, value in {
+        'id': column_id,
+        'created_at': column_created_at
+    }.items() if value]]
+    joined_columns = ', '.join(selected_columns)
     query = f'SELECT {joined_columns} FROM urls WHERE id = {id}'
     with psycopg2.connect(DATABASE_URL) as connection:
         connection.autocommit = True
