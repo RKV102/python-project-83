@@ -1,12 +1,24 @@
 from flask import Blueprint, render_template, flash, redirect, request, url_for
-from page_analyzer.db import (get_all_urls, map_urls, get_url_id,
-                              get_last_url_id, add_url)
+from page_analyzer.db import (get_all_urls, map_urls, get_url_id, get_url_by_id,
+                              get_last_url_id, add_url, get_checks_by_id)
 from urllib.parse import urlparse
 import validators
 
 
+get_url = Blueprint('get_url', __name__, template_folder='templates')
 get_urls = Blueprint('get_urls', __name__, template_folder='templates')
 post_urls = Blueprint('post_urls', __name__, template_folder='templates')
+
+
+@get_url.get('/urls/<id>')
+def get_url_(id):
+    url = get_url_by_id(id, column_id=True, column_created_at=True)
+    checks = get_checks_by_id(id)
+    return render_template(
+        'url.html',
+        url=url,
+        checks=checks
+    )
 
 
 @get_urls.get('/urls')

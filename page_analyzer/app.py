@@ -1,7 +1,6 @@
 from flask import Flask, render_template
 from dotenv import load_dotenv
-from page_analyzer.handlers.urls import get_urls, post_urls
-from page_analyzer.handlers.url import get_url
+from page_analyzer.handlers.urls import get_url, get_urls, post_urls
 from page_analyzer.handlers.checks import post_checks
 import os
 
