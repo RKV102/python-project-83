@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, flash, redirect, request, url_for
-from page_analyzer.db import (get_all_urls, map_urls, get_url_id, get_url_by_id,
-                              get_last_url_id, add_url, get_checks_by_id)
+from page_analyzer.db import (get_all_urls, add_last_check, get_url_id,
+                              get_url_by_id, get_last_url_id, add_url,
+                              get_checks_by_id)
 from urllib.parse import urlparse
 import validators
 
@@ -24,7 +25,7 @@ def get_url_(id):
 @get_urls.get('/urls')
 def get_urls_():
     urls = get_all_urls()
-    urls_with_last_check = map_urls(urls)
+    urls_with_last_check = add_last_check(urls)
     return render_template(
         'urls.html',
         urls=urls_with_last_check

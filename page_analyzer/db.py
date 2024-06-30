@@ -90,19 +90,19 @@ def add_check(id, status_code, h1, title, description):
             cursor.execute(query, (id, status_code, h1, title, description))
 
 
-def map_urls(urls):
-    mapped_urls = []
+def add_last_check(urls):
+    urls_with_last_check = []
     for url in urls:
-        mapped_url = {
+        url_with_last_check = {
             'id': url['id'],
             'name': url['name']
         }
         check = get_last_check_by_id(url['id'])
         if check:
-            mapped_url['last_check_created_at'] = check['created_at']
-            mapped_url['last_check_status_code'] = check['status_code']
+            url_with_last_check['last_check_created_at'] = check['created_at']
+            url_with_last_check['last_check_status_code'] = check['status_code']
         else:
-            mapped_url['last_check_created_at'] = None
-            mapped_url['last_check_status_code'] = None
-        mapped_urls.append(mapped_url)
-    return mapped_urls
+            url_with_last_check['last_check_created_at'] = None
+            url_with_last_check['last_check_status_code'] = None
+        urls_with_last_check.append(url_with_last_check)
+    return urls_with_last_check
