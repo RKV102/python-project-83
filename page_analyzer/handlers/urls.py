@@ -34,15 +34,11 @@ def get_urls_():
 @post_urls.post('/urls')
 def post_urls_():
     url = request.form.get('url', '')
-    error = None
-    if validators.url(url) is not True:
-        error = 'Некорректный URL'
-    elif len(url) > 255:
-        error = 'URL превышает 255 символов'
+    error = validiate(url)
     if error:
+        flash(error, 'error')
         return render_template(
-            'index.html',
-            error=error
+            'index.html'
         ), 422
     normalized_url = normalize_url(url)
     id = get_url_id(normalized_url)
@@ -59,3 +55,11 @@ def normalize_url(url):
     parsed_url = urlparse(url)
     normalized_url = parsed_url.scheme + r'://' + parsed_url.hostname
     return normalized_url
+
+
+def validiate(url):
+    if validators.url(url) is not True:
+        return 'Некорректный URL'
+    if len(url) > 255:
+        return 'URL превышает 255 символов'
+    return False
