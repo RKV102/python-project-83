@@ -14,13 +14,12 @@ def post_checks_(id):
     try:
         response = requests.get(url_name, timeout=(3, 5))
         response.raise_for_status()
-    except (requests.HTTPError, requests.exceptions.Timeout):
-        flash('Произошла ошибка при проверке', 'error')
-    else:
         flash('Страница успешно проверена', 'success')
         status_code = response.status_code
         h1, title, description = parse(response.content)
         add_check(id, status_code, h1, title, description)
+    except (requests.HTTPError, requests.exceptions.Timeout):
+        flash('Произошла ошибка при проверке', 'error')
     return redirect(url_for('get_url.get_url_', id=id), code=302)
 
 
