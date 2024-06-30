@@ -19,13 +19,13 @@ def post_checks_(id):
     else:
         flash('Страница успешно проверена', 'success')
         status_code = response.status_code
-        h1, title, description = parse_response_content(response.content)
+        h1, title, description = parse(response.content)
         add_check(id, status_code, h1, title, description)
     return redirect(url_for('get_url.get_url_', id=id), code=302)
 
 
-def parse_response_content(response_content, parser='html.parser'):
-    soup = BeautifulSoup(response_content, parser)
+def parse(content):
+    soup = BeautifulSoup(content, 'html.parser')
     h1 = soup.h1
     h1_string = h1.string if h1 else None
     title = soup.title
