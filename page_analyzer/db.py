@@ -74,11 +74,13 @@ def get_last_url_id():
 
 
 def add_url(url):
-    query = 'INSERT INTO urls (name) VALUES (%s)'
-    with psycopg2.connect(DATABASE_URL) as connection:
+    query = 'INSERT INTO urls (name) VALUES (%s) RETURNING id'
+    with (psycopg2.connect(DATABASE_URL) as connection):
         connection.autocommit = True
-        with connection.cursor() as cursor:
+        with connection.cursor(cursor_factory=psycopg2.extras.DictCursor)\
+                as cursor:
             cursor.execute(query, [url])
+            return cursor.fetchone()['id']
 
 
 def add_check(id, status_code, h1, title, description):

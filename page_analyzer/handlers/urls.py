@@ -44,8 +44,7 @@ def post_urls_():
     normalized_url = normalize_url(url)
     id = get_url_id(normalized_url)
     if not id:
-        add_url(normalized_url)
-        id = get_last_url_id()
+        id = add_url(normalized_url)
         flash('Страница успешно добавлена', 'success')
     else:
         flash('Страница уже существует', 'warning')
