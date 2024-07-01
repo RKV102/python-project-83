@@ -63,16 +63,6 @@ def get_url_id(url):
             return url_id
 
 
-def get_last_url_id():
-    query = 'SELECT MAX(id) FROM urls'
-    with psycopg2.connect(DATABASE_URL) as connection:
-        connection.autocommit = True
-        with connection.cursor(cursor_factory=psycopg2.extras.DictCursor)\
-                as cursor:
-            cursor.execute(query)
-            return cursor.fetchone()['max']
-
-
 def add_url(url):
     query = 'INSERT INTO urls (name) VALUES (%s) RETURNING id'
     with (psycopg2.connect(DATABASE_URL) as connection):
