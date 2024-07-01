@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, flash, redirect, request, url_for
-from page_analyzer.db import (get_all_urls, add_last_check, get_url_id,
+from page_analyzer.db import (get_all_urls, add_last_check, get_url_by_name,
                               get_url_by_id, add_url, get_checks_by_id)
 from urllib.parse import urlparse
 import validators
@@ -33,32 +33,32 @@ def get_urls_():
 
 @post_urls.post('/urls')
 def post_urls_():
-    url = request.form.get('url', '')
-    error = validiate(url)
+    url_name = request.form.get('url', '')
+    error = validate(url_name)
     if error:
         flash(error, 'error')
         return render_template(
             'index.html'
         ), 422
-    normalized_url = normalize_url(url)
-    id = get_url_id(normalized_url)
-    if not id:
-        id = add_url(normalized_url)
+    normalized_url_name = normalize(url_name)
+    url = get_url_by_name(normalized_url_name)
+    if not url:
+        url = add_url(normalized_url_name)
         flash('Страница успешно добавлена', 'success')
     else:
         flash('Страница уже существует', 'warning')
-    return redirect(url_for('get_url.get_url_', id=id), code=302)
+    return redirect(url_for('get_url.get_url_', id=url['id']), code=302)
 
 
-def normalize_url(url):
-    parsed_url = urlparse(url)
-    normalized_url = parsed_url.scheme + r'://' + parsed_url.hostname
+def normalize(url_name):
+    parsed_url_name = urlparse(url_name)
+    normalized_url = parsed_url_name.scheme + r'://' + parsed_url_name.hostname
     return normalized_url
 
 
-def validiate(url):
-    if validators.url(url) is not True:
+def validate(url_name):
+    if validators.url(url_name) is not True:
         return 'Некорректный URL'
-    if len(url) > 255:
+    if len(url_name) > 255:
         return 'URL превышает 255 символов'
     return False

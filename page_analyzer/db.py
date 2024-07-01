@@ -50,27 +50,24 @@ def get_checks_by_id(id):
             return cursor.fetchall()
 
 
-def get_url_id(url):
-    query = f"SELECT id FROM urls WHERE name = '{url}'"
+def get_url_by_name(url):
+    query = f"SELECT * FROM urls WHERE name = '{url}'"
     with psycopg2.connect(DATABASE_URL) as connection:
         connection.autocommit = True
         with connection.cursor(cursor_factory=psycopg2.extras.DictCursor)\
                 as cursor:
             cursor.execute(query)
-            url_id = cursor.fetchone()
-            if url_id:
-                return url_id['id']
-            return url_id
+            return cursor.fetchone()
 
 
 def add_url(url):
-    query = 'INSERT INTO urls (name) VALUES (%s) RETURNING id'
+    query = 'INSERT INTO urls (name) VALUES (%s) RETURNING *'
     with (psycopg2.connect(DATABASE_URL) as connection):
         connection.autocommit = True
         with connection.cursor(cursor_factory=psycopg2.extras.DictCursor)\
                 as cursor:
             cursor.execute(query, [url])
-            return cursor.fetchone()['id']
+            return cursor.fetchone()
 
 
 def add_check(id, status_code, h1, title, description):
