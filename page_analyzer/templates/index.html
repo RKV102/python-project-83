@@ -1,6 +1,6 @@
-{% extends "inner_layout.html" %}
+{% extends "layout.html" %}
 
-{% block inner_content %}
+{% block content %}
     {% with messages = get_flashed_messages() %}
         {% if messages %}
             {% for message in messages %}
